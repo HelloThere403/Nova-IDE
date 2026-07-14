@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Forge IDE</title>
+<title>Nova IDE</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=DM+Sans:wght@400;500;600;700;900&display=swap" rel="stylesheet">
 <style>
@@ -172,7 +172,7 @@ button:hover{background:var(--bg-3)}
   <header id="titleBar">
     <div class="title-left">
       <button id="menuBtn" title="Toggle Sidebar" style="padding:4px 6px;display:flex;color:var(--tx-2)"></button>
-      <span class="app-name">FORGE IDE</span>
+      <span class="app-name">NOVA IDE</span>
     </div>
     <div class="title-center" id="titleCenter">Welcome</div>
     <div class="title-right">
@@ -227,7 +227,7 @@ button:hover{background:var(--bg-3)}
     </div>
     <div id="editorContainer">
       <div id="welcomeScreen">
-        <div class="welcome-logo">FORGE</div>
+        <div class="welcome-logo">NOVA</div>
         <div class="welcome-sub">A lightweight, browser-based code editor. Everything runs locally in your browser. No server, no terminal, no setup.</div>
         <div class="welcome-actions">
           <button class="wbtn primary" id="wNewFile">New File</button>
@@ -374,10 +374,10 @@ function mkFile(name,type,parent,content=''){
 function defaultProject(){
   const root=mkFile(S.projectName,'folder',null);S.rootId=root.id;S.openFolders.add(root.id);
   const src=mkFile('src','folder',root.id);S.openFolders.add(src.id);
-  mkFile('index.html','file',src.id,'<!DOCTYPE html>\n<html lang="en">\n<head>\n  <meta charset="UTF-8">\n  <meta name="viewport" content="width=device-width, initial-scale=1.0">\n  <title>My Project</title>\n  <link rel="stylesheet" href="style.css">\n</head>\n<body>\n  <h1>Hello, Forge!</h1>\n  <p>Start editing to see changes.</p>\n  <div id="app"></div>\n  <script src="app.js"><\/script>\n</body>\n</html>');
+  mkFile('index.html','file',src.id,'<!DOCTYPE html>\n<html lang="en">\n<head>\n  <meta charset="UTF-8">\n  <meta name="viewport" content="width=device-width, initial-scale=1.0">\n  <title>My Project</title>\n  <link rel="stylesheet" href="style.css">\n</head>\n<body>\n  <h1>Hello, Nova!</h1>\n  <p>Start editing to see changes.</p>\n  <div id="app"></div>\n  <script src="app.js"><\/script>\n</body>\n</html>');
   mkFile('style.css','file',src.id,'/* Main Styles */\nbody {\n  font-family: system-ui, sans-serif;\n  max-width: 800px;\n  margin: 2rem auto;\n  padding: 0 1rem;\n  color: #e0e0e0;\n  background: #1a1a20;\n}\n\nh1 {\n  color: #f59e0b;\n  font-size: 2.5rem;\n  margin-bottom: 0.5rem;\n}\n\np {\n  color: #9e9eb2;\n  line-height: 1.6;\n}\n\n#app {\n  margin-top: 2rem;\n  padding: 1.5rem;\n  border: 1px solid #2a2a36;\n  border-radius: 8px;\n  background: #222229;\n}\n');
   mkFile('app.js','file',src.id,'// Main Application\nfunction init() {\n  const app = document.getElementById(\'app\');\n  app.innerHTML = \'<p>App loaded successfully!</p>\';\n\n  console.log(\'Project initialized\');\n}\n\n// Counter example\nlet count = 0;\nfunction increment() {\n  count++;\n  const el = document.getElementById(\'count\');\n  if (el) el.textContent = count;\n}\n\ndocument.addEventListener(\'DOMContentLoaded\', init);\n');
-  mkFile('README.md','file',root.id,'# My Project\n\nBuilt with Forge IDE — a browser-based code editor.\n\n## Files\n\n- `src/index.html` — Main HTML page\n- `src/style.css` — Stylesheet\n- `src/app.js` — Application logic\n\n## Getting Started\n\nOpen `src/index.html` in a browser to view the project.\nEdit files here in Forge IDE and press Ctrl+S to save.\n');
+  mkFile('README.md','file',root.id,'# My Project\n\nBuilt with Nova IDE — a browser-based code editor.\n\n## Files\n\n- `src/index.html` — Main HTML page\n- `src/style.css` — Stylesheet\n- `src/app.js` — Application logic\n\n## Getting Started\n\nOpen `src/index.html` in a browser to view the project.\nEdit files here in Nova IDE and press Ctrl+S to save.\n');
 }
 function getFilePath(id){const parts=[];let n=S.files.get(id);while(n){parts.unshift(n.name);n=n.parent?S.files.get(n.parent):null}return parts.join('/')}
 function findFileByName(name,parentId){
@@ -839,7 +839,7 @@ const COMMANDS=[
   {label:'Close All Tabs',shortcut:'',fn:closeAllTabs},
   {label:'Format Document',shortcut:'',fn:()=>toast('Format hook — connect a formatter')},
   {label:'Toggle AI Assistant',shortcut:'',fn:toggleAI},
-  {label:'Clear Local Storage',shortcut:'',fn:()=>{localStorage.removeItem('forge-ide');toast('Storage cleared. Reload to start fresh.')}},
+  {label:'Clear Local Storage',shortcut:'',fn:()=>{localStorage.removeItem('nova-ide');toast('Storage cleared. Reload to start fresh.')}},
 ];
 
 let cpSelected=0;
@@ -937,10 +937,10 @@ function saveAll(){S.dirty.clear();renderTabs();renderTree();persist();toast('Al
 function persist(){
   const data={projectName:S.projectName,files:[]};
   S.files.forEach(f=>data.files.push({id:f.id,name:f.name,type:f.type,parent:f.parent,content:f.content,children:f.children}));
-  try{localStorage.setItem('forge-ide',JSON.stringify(data))}catch(e){}
+  try{localStorage.setItem('nova-ide',JSON.stringify(data))}catch(e){}
 }
 function loadPersist(){
-  try{const raw=localStorage.getItem('forge-ide');if(!raw)return false;
+  try{const raw=localStorage.getItem('nova-ide');if(!raw)return false;
     const data=JSON.parse(raw);S.projectName=data.projectName||'My Project';
     data.files.forEach(f=>S.files.set(f.id,{id:f.id,name:f.name,type:f.type,parent:f.parent,content:f.content||'',children:f.children||[]}));
     S.files.forEach(f=>{if(f.type==='folder'&&!f.parent)S.rootId=f.id});return S.files.size>0;
