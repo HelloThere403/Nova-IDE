@@ -351,7 +351,14 @@ let _idC=0;
 function uid(){return 'f'+(++_idC)}
 function escH(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
 function ext(name){const i=name.lastIndexOf('.');return i>=0?name.slice(i+1).toLowerCase():''}
-function langOfFile(name){const e=ext(name);if(['js','mjs','cjs','ts','tsx','jsx'].includes(e))return'javascript';if(['html','htm','svg'].includes(e))return'html';if(['css','scss','less'].includes(e))return'css';if(e==='json')return'json';return'plain'}
+function langOfFile(name){
+  const e=ext(name).toLowerCase();
+  if(['js','mjs','cjs','ts','tsx','jsx'].includes(e)) return 'javascript';
+  if(['html','htm','svg'].includes(e)) return 'html';
+  if(['css','scss','less'].includes(e)) return 'css';
+  if(e==='json') return 'json';
+  return 'plain';
+}
 function langLabel(l){return{javascript:'JavaScript',html:'HTML',css:'CSS',json:'JSON',plain:'Plain Text'}[l]||'Plain Text'}
 function toast(msg){const t=document.createElement('div');t.className='toast';t.textContent=msg;$toastContainer.appendChild(t);setTimeout(()=>{t.classList.add('out');setTimeout(()=>t.remove(),200)},2500)}
 function copyToClipboard(text){
